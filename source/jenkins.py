@@ -11,6 +11,7 @@ import sys
 import urllib
 import socket
 import json
+import os.path
 
 from Feedback import Feedback
 from xml.dom import minidom
@@ -61,7 +62,12 @@ def get_status(terms=""):
                         icon = health_to_icon(job["healthReport"][0]["score"], job["color"])
                     else:
                         subtext = ""
-                        icon = "images/"+job["color"]+".png"
+                        color = 'gray'
+
+                        if 'color' in job:
+                            color = job['color']
+
+                        icon = "images/"+color+".png"
                     feedback.add_item(title, subtext, job["url"], "yes", "", icon)
         else:
             feedback.add_item("No results found", "I'm sorry, I failed to find what you were looking for", "", "no")
