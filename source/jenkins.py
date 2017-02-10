@@ -7,19 +7,17 @@ Version:    0.1 (26-03-2013)
 """
 
 import re
-import sys
 import urllib
 import socket
 import json
-import os.path
 
 from Feedback import Feedback
-from xml.dom import minidom
 
 # Set the timeout to 5 seconds
 socket.setdefaulttimeout(5)
 
 CONFIGURED_URL = ""
+
 
 def execute(query):
     """Execute the desired command
@@ -51,11 +49,11 @@ def get_status(terms=""):
     feedback = Feedback()
     data = get_data_from_url()
 
-    if data != None:
+    if data is not None:
         if "jobs" in data and len(data["jobs"]) > 0:
             search_regex = re.compile(terms, re.IGNORECASE)
             for job in data["jobs"]:
-                if re.search(search_regex, job["name"]) != None:
+                if re.search(search_regex, job["name"]) is not None:
                     title = job["name"]
                     if "healthReport" in job and len(job["healthReport"]) > 0:
                         subtext = job["healthReport"][0]["description"]
@@ -67,7 +65,7 @@ def get_status(terms=""):
                         if 'color' in job:
                             color = job['color']
 
-                        icon = "images/"+color+".png"
+                        icon = "images/" + color + ".png"
                     feedback.add_item(title, subtext, job["url"], "yes", "", icon)
         else:
             feedback.add_item("No results found", "I'm sorry, I failed to find what you were looking for", "", "no")
